@@ -27,7 +27,7 @@
        <div class="position-relative iq-banner">
                 <nav class="nav navbar navbar-expand-lg navbar-light iq-navbar">
           <div class="container-fluid navbar-inner">
-            <a href="../dashboard/index.html" class="navbar-brand">
+            <a href="/User/Dashboard" class="navbar-brand">
                 <!--Logo start-->
                 <!--logo End-->
                 
