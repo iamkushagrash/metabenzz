@@ -12,7 +12,7 @@ use Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
-use App\Mail\WelcomeMail;
+//use App\Mail\WelcomeMail;
 
 class AssetDetailController extends Controller
 {
@@ -107,7 +107,7 @@ class AssetDetailController extends Controller
         $info=$this->findUserName($request->referrer);
         Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'/*, 'unique:users'*/],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'referrer'  =>['required',$info['regex']],
             'contact'    => ['required', 'numeric'],
@@ -165,14 +165,7 @@ class AssetDetailController extends Controller
         //     \Log::info('Error in mails after registration of user id '.$userdetails);
         //     \Log::info($e->messages());
         // }
-        // try{
-        //     $mwObj=new SupportQueryController();
-        //     $metawalletStatus=$mwObj->sendDatatoMetawallet($details);//\Log::info('metawallet api status'.$metawalletStatus);
-        // }
-        // catch(Exception $e){
-        //     \Log::info('Error in metawallet after registration of user id '.$userdetails);
-        //     \Log::info($e->messages());
-        // }
+        
 
         // finally{
         //     /*$details=array('username' => $user->email, 'password'=>$request->password ,'uniqueid'=>$randomId);*/
@@ -184,7 +177,7 @@ class AssetDetailController extends Controller
     public function randomid(){
         $val=true;
         while ( $val) {
-            $num="MWT".rand(1111111,9999999);
+            $num="MBZ".rand(1111111,9999999);
             $chkUser=\App\User::where('uuid',$num)->first();
             if(is_null($chkUser)){
                 $val=false;

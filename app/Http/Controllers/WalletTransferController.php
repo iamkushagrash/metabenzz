@@ -131,7 +131,7 @@ class WalletTransferController extends Controller
                 ])->first();
 
                 if (!$plan) {
-                    return redirect('/User/Drag')->with('warning', 'No suitable stacking plan found.');
+                    return redirect('/User/Drag')->with('warning', 'No suitable staking plan found.');
                 }
 
                 \DB::beginTransaction();
@@ -159,8 +159,8 @@ class WalletTransferController extends Controller
 
                     // ✅ 3. Insert Stacking Deposit
                     $capAmount = ($userUpdate->first()->active_direct)
-                        ? Crypt::encrypt($request->amount * 5)
-                        : Crypt::encrypt($request->amount * $plan->capping);
+                        ? ($request->amount * 5)
+                        : ($request->amount * $plan->capping);
 
                     $insertWallet = \App\StackingDeposite::insertGetId([
                         'userid' => $userId,
@@ -182,7 +182,7 @@ class WalletTransferController extends Controller
 
                     // Check if user already has a points wallet
                     $pointsWallet = \App\PointsWallet::firstOrCreate(
-                        ['userid' => \Session::get('user.id')],
+                        ['userid' => $userId],
                         ['balance' => 0]
                     );
 
@@ -191,8 +191,8 @@ class WalletTransferController extends Controller
                     $pointsWallet->save();
 
                     // Insert transaction entry
-                    \App\PointsTransaction::create([
-                        'userid' => \Session::get('user.id'),
+                    $insertPoints = \App\PointsTransaction::create([
+                        'userid' => $userId,
                         'amount' => $bonusAmount,
                         'type' => 'credit',
                         'source' => 'Drag Investment Bonus',
@@ -226,7 +226,7 @@ class WalletTransferController extends Controller
                         if ($guiderDetail->userstate) {
                             $directAmount = $request->amount * 5 / 100;
                             $directAmount = $cappingFunction->cappingCalculation($guiderDetail->id, $directAmount);
-                            \App\BonusReward::create([
+                            $directIncome5 = \App\BonusReward::create([
                                 'userid' => $guiderDetail->id,
                                 'fromuser' => $userId,
                                 'amount' => $directAmount / $price->price,
@@ -321,9 +321,9 @@ public function lockmbz(Request $request)
         return redirect('/User/Lock')->with('errors', $validator->errors());
     }
 
-    if (fmod($request->amount, 100) != 0) {
+    /*if (fmod($request->amount, 100) != 0) {
         return redirect('/User/Lock')->with('warning','Amount should be multiple of 100');
-    }
+    }*/
 
     $user = \App\User::where('uuid', \Session::get('user.userid'))->first();
     if (!\Hash::check($request->password, $user->password)) {
@@ -331,11 +331,35 @@ public function lockmbz(Request $request)
     }
 
     $walletAmount = \App\AccountDeposit::where('userid', \Session::get('user.id'))->first();
+    $getIncomingFund = \App\WalletTransfer::where([
+                    ['userid', \Session::get('user.id')], 
+                    ['toWallet', 'wallet']
+                ])->get();
+    $getOutgoingFund = \App\WalletTransfer::where([
+                    ['fromUser', \Session::get('user.id')], 
+                    ['txnid', 0], 
+                    ['fromWallet', 'wallet']
+                ])->get();
+
+    $totalAmount = $getIncomingFund->sum('amount') - $getOutgoingFund->sum('amount');
+
     if (Crypt::decrypt($walletAmount->amount) < $request->amount) {
         return redirect('/User/Lock')->with('warning','Insufficient balance.');
     }
+    if ($totalAmount < $request->amount) {
+        return redirect('/User/Lock')->with('warning', 'Insufficient balance.');
+    }
 
     $price = \App\ProfileStore::where('id',1)->first();
+    $plan = \App\StackingDetail::where([
+                    ['min_amount', '<=', $request->amount],
+                    ['max_amount', '>=', $request->amount],
+                    ['status', 2]
+    ])->first();
+
+    if (!$plan) {
+        return redirect('/User/Lock')->with('warning', 'No suitable locking plan found.');
+    }
 
     \DB::beginTransaction();
     try {
@@ -347,7 +371,7 @@ public function lockmbz(Request $request)
             'userid' => $userId,
             'txnid' => 0,
             'fromWallet' => 'wallet',
-            'toWallet' => 'basic',
+            'toWallet' => 'lock',
             'amount' => $request->amount,
             'fromUser' => \Session::get('user.id'),
             'created_at' => now(),
@@ -360,14 +384,19 @@ public function lockmbz(Request $request)
         ]);
 
         // 3️⃣ Insert Locking Stacking Deposit
+        $capAmount = ($userUpdate->first()->active_direct)
+                        ? ($request->amount * 5)
+                        : ($request->amount * $plan->capping);
+
         $insertWallet = \App\StackingDeposite::insertGetId([
             'userid' => $userId,
             'txnid' => $insWalletEntry,
             'amount' => $request->amount / $price->price,
             'usdt' => $request->amount,
-            'planid' => 0,
+            'planid' => $plan->id,
+            'capamount' => $capAmount,
             'status' => 1,
-            'istatus' => 1,
+            'istatus' => ($userUpdate->first()->active_direct) ? 1 : 0,
             'staketype' => 2, // locking type
             'invest_type' => 1, // locking deposit
             'maturity_date' => now()->addYear(),
@@ -377,14 +406,14 @@ public function lockmbz(Request $request)
         // 4️⃣ Add 2X Points Wallet Bonus
         $bonusAmount = $request->amount;
         $pointsWallet = \App\PointsWallet::firstOrCreate(
-            ['userid' => \Session::get('user.id')],
+            ['userid' => $userId],
             ['balance' => 0]
         );
         $pointsWallet->balance += $bonusAmount;
         $pointsWallet->save();
 
-        \App\PointsTransaction::create([
-            'userid' => \Session::get('user.id'),
+        $insertPonitsW = \App\PointsTransaction::create([
+            'userid' => $userId,
             'amount' => $bonusAmount,
             'type' => 'credit',
             'source' => 'Locking Deposit Bonus',
@@ -392,7 +421,7 @@ public function lockmbz(Request $request)
             'created_at' => now(),
         ]);
 
-        // 5️⃣ Update user investment info
+        // Update user investment info
         $userUpdate->increment('current_self_investment', $request->amount);
         $userUpdate->increment('total_self_investment', $request->amount);
         $userUpdate->increment('current_investment', $request->amount);
@@ -400,7 +429,7 @@ public function lockmbz(Request $request)
         $userUpdate->increment('userstate'); // keep existing
         $userUpdate->update(['userstatus' => 1, 'roi_status' => 1]);
 
-        // 6️⃣ Guider/Sponsor Update
+        // Guider/Sponsor Update
         $cappingFunction = new \App\Http\Controllers\StackingDetailController();
         $guiderUpdate = \App\UserDetails::where('userid', $userUpdate->sponsorid);
 
@@ -415,7 +444,7 @@ public function lockmbz(Request $request)
             if ($guiderDetail->userstate) {
                 $directAmount = $request->amount * 5 / 100;
                 $directAmount = $cappingFunction->cappingCalculation($guiderDetail->id, $directAmount);
-                \App\BonusReward::create([
+                $insertBonus5 = \App\BonusReward::create([
                     'userid' => $guiderDetail->id,
                     'fromuser' => $userId,
                     'amount' => $directAmount / $price->price,
