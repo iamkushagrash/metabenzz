@@ -29,15 +29,18 @@ protected function validator(array $data)
 {
     $info = $this->findUserName($data['referrer']);
 
-    $referrerRules = [$info['regex']]; // ✅ Don't explode
-
-    return Validator::make($data, [
+    $referrerRules = [$info['regex']];
+return Validator::make($data, [
         'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
         'referrer'  => $referrerRules,
         'contact'    => ['required', 'numeric'],
         'countrycode' => ['nullable', 'string'],
+        'wallet_address' => ['nullable', 'string', 'unique:users,wallet_address'], 
+    ], [
+        'email.unique' => 'This email address is already registered.',
+        'wallet_address.unique' => 'This wallet address is already in use.',
     ]);
 }
 

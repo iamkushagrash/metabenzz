@@ -278,76 +278,37 @@ class UserDetailsController extends Controller
         ->leftJoin('users','users.id','=','user_details.userid')
         ->leftJoin('users as gd','gd.id','=','user_details.sponsorid')
         ->leftJoin('asset_details','asset_details.userid','=','user_details.id')
-        ->select('users.usersname', 'users.email', 'users.contact', 'users.ccode', 'gd.usersname as guidername', 'gd.email as guiderid', 'asset_details.bep20addr as styaddress', 'asset_details.usdttrc20addr as usdttrc20address', 'asset_details.usdtbep20addr as usdtbep20address')
+        ->select('users.usersname', 'users.email', 'users.contact','users.wallet_address', 'users.ccode', 'gd.usersname as guidername', 'gd.email as guiderid', 'asset_details.bep20addr as styaddress', 'asset_details.usdttrc20addr as usdttrc20address', 'asset_details.usdtbep20addr as usdtbep20address')
         ->get()->first();
         $editstatus=\App\AssetDetailChanges::where([['userid',\Session::get('user.id')],['asset_status','>',0]])->first();
 
         return view('user.profile')->with('profile',$memberdt)->with('changeasset',$editstatus);
     }
-    public function userUpdate(Request $request){
-        set_time_limit(0);
-        $editstatus=\App\AssetDetailChanges::where([['userid',\Session::get('user.id')],['asset_status','>',0]])->first();
-        if(is_null($editstatus)){
-            $vali=Validator::make($request->all(), [
-                'mwtaddress'      => ['string','nullable','regex:/^0x[a-fA-F0-9]{40}$/u'],
-                'usdtaddress'      => ['string','nullable','regex:/^T[a-zA-Z0-9]{33}$/u'],
-                'usdtbep20address'      => ['string','nullable','regex:/^0x[a-fA-F0-9]{40}$/u'],
-            ])->validate();//dd($vali->errors());
-            $userdt=DB::table('user_details')->where([['users.licence','1'],['user_details.id',Session::get('user.id')]])
-            ->join('users','users.id','=','user_details.userid')
-            ->select('users.id as id', 'users.id as uid','users.email as email')
-            ->get()->first();
-            $userdetail=array();
-            if(!is_null($request->mwtaddress))
-                $userdetail['bep20addr']=$request->mwtaddress;
-            if(!is_null($request->usdtaddress))
-                $userdetail['usdttrc20addr']=$request->usdtaddress;
-            if(!is_null($request->usdtbep20address))
-                $userdetail['usdtbep20addr']=$request->usdtbep20address;
-            if(sizeof($userdetail)>0){
-                $userdetail['userid']=\Session::get('user.id');
-                $userdetail['token']=rand(100000,999999);
-                $userdetail['email']=$userdt->email;
-                $userdetail['email_time']=now();
-                $userDetailSave=\App\AssetDetailChanges::insertGetId($userdetail);
-                $userdetail['view']="otpMail";
-                $userdetail['subject']="OTP to confirm profile changes";
-                $userdetail['useruuid']=\Session::get('user.userid');
-                $mail=new SupportQueryController();
-                $response=$mail->sendMailgun($userdetail);
-                if($response==0)
-                    $status=1;
-                else
-                    $status=2;
-                $updstatus=\App\AssetDetailChanges::where('id',$userDetailSave)->update(['asset_status'=>$status,'updated_at'=>now()]);
-            }
-            //return redirect()->back()->with('success','Changes Saved Successfully.');
-            return redirect()->back()->with('success','Verification mail sent to your mail id .Confirm it to save changes.');
-        }else{
-            $vali=Validator::make($request->all(), [
-                'otp'      => ['integer','required',],
-            ])->validate();
-            if($editstatus->token==$request->otp){
-                $checkUser=\App\AssetDetailChanges::where('id',$editstatus->id)->first();
-                if(!is_null($checkUser)){
-                    $updateUser=\App\AssetDetail::firstOrCreate(['userid'=>$checkUser->userid]);
-                    if(!is_null($checkUser->bep20addr))
-                    $updateUser->bep20addr=$checkUser->bep20addr;
-                    if(!is_null($checkUser->usdttrc20addr))
-                    $updateUser->usdttrc20addr=$checkUser->usdttrc20addr;
-                    if(!is_null($checkUser->usdtbep20addr))
-                    $updateUser->usdtbep20addr=$checkUser->usdtbep20addr;
-                    $updateUser->asset_status=1;
-                    $updateUser->updated_at=now();
-                    $updateUser->save();
-                    $deleteUser=\App\AssetDetailChanges::where('id',$checkUser->id)->delete();
-                    return redirect()->to('/User/EditProfile')->with('success','Your Profile Edits Are Live Now.');
-                }
-            }else{
-                return redirect()->to('/User/EditProfile')->with('warning','Invalid OTP . Please check email and enter again.');
-            }
-        }
+public function userUpdate(Request $request){
+    // Fetch user record
+    $user = \App\User::where('id', \Session::get('user.id'))->first();
+    if(!$user) {
+        return redirect()->back()->with('warning', 'User not found.');
     }
+
+    // Check if wallet address already exists
+    if(!empty($user->wallet_address)) {
+        // Address already exists, no update needed
+        return redirect()->back()->with('warning', 'Wallet address already set. Cannot update.');
+    }
+
+    // Validate wallet address
+    $request->validate([
+        'usdtbep20address' => ['required','string','regex:/^0x[a-fA-F0-9]{40}$/u'],
+    ]);
+
+    // Update wallet address
+    $user->wallet_address = $request->usdtbep20address;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Wallet address saved successfully.');
+}
+
 
     public function showChangePass(){
         $memberdt=DB::table('user_details')->where([['users.licence','1'],['user_details.id',Session::get('user.id')]])

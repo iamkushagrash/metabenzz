@@ -95,10 +95,10 @@
   "></div>
 
   <!-- 🔹 Foreground content -->
-  <p class="mb-1"><strong>Name:</strong> Meta Benz User</p>
-  <p class="mb-1"><strong>User Id:</strong> MBZ847237842</p>
-  <p class="mb-1"><strong>Sponsor Id:</strong> MBZ39848923</p>
-  <p class="mb-1"><strong>DOJ:</strong> 2025-09-05</p>
+  <p class="mb-1"><strong>Name:</strong> {{ Session::get('user.name') }}</p>
+  <p class="mb-1"><strong>User Id:</strong>{{ Session::get('user.uuid') }}</p>
+  <p class="mb-1"><strong>Sponsor Id:</strong>{{ Session::get('user.sponsorid') }}</p>
+  <p class="mb-1"><strong>DOJ:</strong> {{ Session::get('user.doj') }}</p>
 </div>
 
 <style>
@@ -148,7 +148,7 @@
                         <span class="mini-icon">-</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="/User/ArbitrageDashboard">
                         <i class="icon">
                             <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -158,7 +158,7 @@
                         </i>
                         <span class="item-name">Arbitrage Panel</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="/User/Dashboard">
                         <i class="icon">

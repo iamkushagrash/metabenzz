@@ -28,8 +28,8 @@ Route::group(['middleware' => ['auth','userverification']], function () {
     Route::get('/User/Dashboard', 'HomeController@userindex');
     Route::get('/User/Documentation', 'HomeController@documentation');
     // Route::get('/User/ArbitrageDashboard', 'HomeController@userarbitrageindex');
-    // Route::get('/User/EditProfile', 'UserDetailsController@showEditData');
-    // Route::post('/User/EditProfile', 'UserDetailsController@userUpdate');
+    Route::get('/User/EditProfile', 'UserDetailsController@showEditData');
+    Route::post('/User/EditProfile', 'UserDetailsController@userUpdate');
     // Route::get('/User/resendProfileOtp','AssetDetailChangesController@resendProfileEditOtpWeb');
 
     Route::get('/User/ChangePassword', 'UserDetailsController@showChangePass');
