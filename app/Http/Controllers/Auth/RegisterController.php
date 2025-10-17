@@ -118,15 +118,6 @@ protected function create(array $data)
     //     \Log::info($e->getMessage());
     // }
 
-    // // Send data to MetaWallet
-    // try {
-    //     $mwObj = new SupportQueryController();
-    //     $mwObj->sendDatatoMetawallet($details);
-    // } catch (Exception $e) {
-    //     \Log::info('MetaWallet error after registration: ' . $userdetails);
-    //     \Log::info($e->getMessage());
-    // }
-
     return redirect('/register')->with([
     'success' => 'Registration Successful.',
     'details' => [

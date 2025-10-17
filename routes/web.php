@@ -24,6 +24,36 @@ Route::get('/register/{userid}','Auth\RegisterController@reffer');
 Route::get('/Transaction/transactionStatus/{id}','CpsIncomeController@paymentStatus');
 
 
+
+//Clear Cache
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    $exitCode = Artisan::call('config:clear');
+    $exitCode = Artisan::call('view:clear');
+    // return what you want
+});
+
+
+//Admin
+Route::group(['middleware' => ['auth','adminverification']], function () {
+    Route::get('/Main/Dashboard', 'HomeController@adminindex');
+
+
+    Route::get('/Main/AdminUSDTuser', 'AccountDepositController@adminUSDTPage');
+    Route::post('/Main/AdminUSDTuser', 'AccountDepositController@findUser');
+    Route::post('/Main/TransferAdminUSDTToUser', 'AccountDepositController@transferUsdtToAdmin');
+
+    Route::get('/Main/AdminUSDTReport', 'AccountDepositController@reportAdminUsdt');
+    Route::post('/Main/AdminUSDTReport', 'AccountDepositController@reportAdminUsdt');
+    Route::get('/Main/UserWalletBalance', 'AccountDepositController@userWalletBalance');
+
+
+
+});
+
+
+
+
 Route::group(['middleware' => ['auth','userverification']], function () {
     Route::get('/User/Dashboard', 'HomeController@userindex');
     Route::get('/User/Documentation', 'HomeController@documentation');
