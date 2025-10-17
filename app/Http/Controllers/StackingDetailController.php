@@ -47,26 +47,26 @@ class StackingDetailController extends Controller
         }
     }
 
-    public function boosterCheckForUser($id){
-        $userDetail=\App\UserDetails::where('id',$id)->first();
-        \Log::info('created_at check created_at='.$userDetail->created_at.' check date='.date('Y-m-d',strtotime('- 7 days',strtotime(now()))).' Answer is '.$userDetail->created_at >= date('Y-m-d',strtotime('- 7 days',strtotime(now()))));
-        \Log::info('is null loan status '.is_null($userDetail->userLoanStatus()));
-        if($userDetail->created_at >= date('Y-m-d',strtotime('- 7 days',strtotime(now()))) && (is_null($userDetail->userLoanStatus()) || $userDetail->userLoanStatus()->status==0)){
-        \Log::info('inside if');
-            $m=0;
-            foreach($userDetail->totalDirect()->get() as $direct){
-                \Log::info('self '.$userDetail->stackingDeposite()->max('usdt'));
-                \Log::info('direct '.$direct->stackingDeposite()->max('usdt'));
-                \Log::info('loan Status '.is_null($direct->userLoanStatus()));
-                if(($direct->stackingDeposite()->max('usdt')>=$userDetail->stackingDeposite()->max('usdt')) && (is_null($direct->userLoanStatus()) || $direct->userLoanStatus()->status==0)){
-                    $m++;
-                }
-            }\Log::info('m '.$m);
-            if($m>=5){
-                $userUpdate=\App\UserDetails::where('id',$id)->update([
-                    'booster'  =>  2,
-                ]);
-            }
-        }
-    }
+    // public function boosterCheckForUser($id){
+    //     $userDetail=\App\UserDetails::where('id',$id)->first();
+    //     \Log::info('created_at check created_at='.$userDetail->created_at.' check date='.date('Y-m-d',strtotime('- 7 days',strtotime(now()))).' Answer is '.$userDetail->created_at >= date('Y-m-d',strtotime('- 7 days',strtotime(now()))));
+    //     \Log::info('is null loan status '.is_null($userDetail->userLoanStatus()));
+    //     if($userDetail->created_at >= date('Y-m-d',strtotime('- 7 days',strtotime(now()))) && (is_null($userDetail->userLoanStatus()) || $userDetail->userLoanStatus()->status==0)){
+    //     \Log::info('inside if');
+    //         $m=0;
+    //         foreach($userDetail->totalDirect()->get() as $direct){
+    //             \Log::info('self '.$userDetail->stackingDeposite()->max('usdt'));
+    //             \Log::info('direct '.$direct->stackingDeposite()->max('usdt'));
+    //             \Log::info('loan Status '.is_null($direct->userLoanStatus()));
+    //             if(($direct->stackingDeposite()->max('usdt')>=$userDetail->stackingDeposite()->max('usdt')) && (is_null($direct->userLoanStatus()) || $direct->userLoanStatus()->status==0)){
+    //                 $m++;
+    //             }
+    //         }\Log::info('m '.$m);
+    //         if($m>=5){
+    //             $userUpdate=\App\UserDetails::where('id',$id)->update([
+    //                 'booster'  =>  2,
+    //             ]);
+    //         }
+    //     }
+    // }
 }

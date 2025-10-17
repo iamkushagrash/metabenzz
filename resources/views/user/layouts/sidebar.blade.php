@@ -49,10 +49,10 @@
             <!--Logo start-->
             <div class="logo-main">
     <div class="logo-normal">
-        <img src="{{ asset('main/images/logoicon.png') }}" alt="Logo" class="img-fluid" style="width:30px; height:30px;">
+        <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Logo" class="img-fluid" style="width:30px; height:30px;">
     </div>
     <div class="logo-mini">
-        <img src="{{ asset('main/images/logoicon.png') }}" alt="Logo Mini" class="img-fluid" style="width:30px; height:30px;">
+        <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Logo Mini" class="img-fluid" style="width:30px; height:30px;">
     </div>
 </div>
 
