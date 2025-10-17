@@ -60,6 +60,33 @@ class HomeController extends Controller
         ->selectRaw('case when first_stack.staketype=1 then "3cd2a5 " when first_stack.staketype=2 then "FF0000 " when first_stack.staketype=3 then "FFD700 " when first_stack.staketype=4 then "ffffff " else "FF0000 " end as statusclass')
         ->get()->first();
 
+        $lockedincome = \App\UserDetails::where('user_details.id', Session::get('user.id'))
+    ->leftJoin(DB::raw('(SELECT * FROM stacking_deposites 
+                         WHERE id IN (SELECT MIN(id) FROM stacking_deposites GROUP BY userid) 
+                         AND invest_type = 1) as first_stack'), 
+               'user_details.id', '=', 'first_stack.userid')
+    ->select(
+        'total_direct as totaldirect',
+        'active_direct as activedirect',
+        'total_downline as totaldownline',
+        'active_downline as activedownline',
+        'total_direct_investment as directbusiness',
+        'total_level_investment as levelbusiness',
+        'total_investment as totalbusiness',
+        'current_self_investment as currentself',
+        'capping as capping',
+        'booster as booster'
+    )
+    ->selectRaw('CASE 
+                    WHEN first_stack.staketype = 1 THEN "3cd2a5"
+                    WHEN first_stack.staketype = 2 THEN "FF0000"
+                    WHEN first_stack.staketype = 3 THEN "FFD700"
+                    WHEN first_stack.staketype = 4 THEN "ffffff"
+                    ELSE "FF0000"
+                END as statusclass')
+    ->first();
+    
+
         $userDetail=\App\UserDetails::where('id',\Session::get('user.id'))->first();
 
         $totaldirect=DB::table('user_details')->where([['user_details.id',Session::get('user.id')],['u.permission','1']])
@@ -171,6 +198,7 @@ class HomeController extends Controller
                                 $usrRaw['userDetail']=$userDetail;
                                 $usrRaw['totaldirect']=$totaldirect;
                                 $usrRaw['activedirect']=$activedirect;
+                                $usrRaw['lockedincome']=$lockedincome;
                                 $usrRaw['totalincome']=$totalincome;
                                 $usrRaw['unpaidincome']=$unpaidincome;
                                 $usrRaw['totalwithdraw']=$totalwithdraw;

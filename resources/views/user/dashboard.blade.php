@@ -371,8 +371,10 @@
                 <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
             </div>
                     <div>
-                        <h3 class="mb-0">M 1</h3>
-                        <p class="mb-0" style="color:white;">LOCKING INCOME (Non-Working)</p>
+                         <h3 class="mb-0">
+                    $ {{ $data['lockedincome'] ? round($data['lockedincome']->currentself, 2) : 0 }}
+                </h3>
+                        <p class="mb-0" style="color:white;">LOCKED Investment (Non-Working)</p>
                     </div>
                 </div>
             </div>
@@ -386,7 +388,7 @@
                 <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
             </div>
                     <div>
-                        <h3 class="mb-0">M 5</h3>
+                        <!-- <h3 class="mb-0">M 5</h3> -->
                         <p class="mb-0" style="color:white;">RANK INCOME (Working)</p>
                     </div>
                 </div>
@@ -401,7 +403,7 @@
                 <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
             </div>
                     <div>
-                        <h3 class="mb-0">M 10</h3>
+                        <!-- <h3 class="mb-0">M 10</h3> -->
                         <p class="mb-0" style="color:white;">GLOBAL TURNOVER INCOME (Working)</p>
                     </div>
                 </div>
@@ -416,7 +418,7 @@
                 <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
             </div>
                     <div>
-                        <h3 class="mb-0">M 25</h3>
+                        <!-- <h3 class="mb-0">M 25</h3> -->
                         <p class="mb-0" style="color:white;">META POOL INCOME (Working)</p>
                     </div>
                 </div>
@@ -431,7 +433,7 @@
                 <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
             </div>
                     <div>
-                        <h3 class="mb-0">M 200</h3>
+                       <h3 class="mb-0">$ {{ round($data['totaldirectreceived']->totaldirect, 6) }}</h3>
                         <p class="mb-0" style="color:white;">BONUS INCOME (Non-Working)</p>
                     </div>
                 </div>
@@ -453,7 +455,7 @@
             </div>
         </div>
 
-        <!-- 10. REWARD INCOME -->
+        <!-- 10. REWARD INCOME
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
@@ -466,7 +468,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- 11. DECISION MAKING INCOME -->
         <div class="col-12 col-md-4">
