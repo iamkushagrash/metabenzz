@@ -42,6 +42,14 @@
     border-radius: 8px; /* Example border radius */
     border: none; /* Remove default button border */
 }
+.rotate-icon {
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
@@ -311,32 +319,27 @@
 
         <!-- 1. PRINCIPLE REFUND -->
         <div class="col-12 col-md-4">
-            <div class="card h-100">
-                <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="mb-0">M 100</h3>
-                        <p class="mb-0" style="color:white;">PRINCIPLE REFUND (Non-Working)</p>
-                    </div>
-                </div>
+    <div class="card h-100">
+        <div class="card-body d-flex align-items-center">
+            <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30">
+            </div>
+            <div>
+                <h3 class="mb-0">100</h3>
+                <p class="mb-0" style="color:white;">PRINCIPLE REFUND (Non-Working)</p>
             </div>
         </div>
+    </div>
+</div>
+
 
         <!-- 2. DRAGGING INCOME -->
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 2</h3>
                         <p class="mb-0" style="color:white;">DRAGGING INCOME (Non-Working)</p>
@@ -350,11 +353,8 @@
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 4</h3>
                         <p class="mb-0" style="color:white;">DIRECT INCOME (Working)</p>
@@ -368,11 +368,8 @@
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 1</h3>
                         <p class="mb-0" style="color:white;">LOCKING INCOME (Non-Working)</p>
@@ -385,12 +382,9 @@
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 5</h3>
                         <p class="mb-0" style="color:white;">RANK INCOME (Working)</p>
@@ -403,12 +397,9 @@
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 10</h3>
                         <p class="mb-0" style="color:white;">GLOBAL TURNOVER INCOME (Working)</p>
@@ -421,12 +412,9 @@
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 25</h3>
                         <p class="mb-0" style="color:white;">META POOL INCOME (Working)</p>
@@ -439,12 +427,9 @@
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 200</h3>
                         <p class="mb-0" style="color:white;">BONUS INCOME (Non-Working)</p>
@@ -458,11 +443,8 @@
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 32</h3>
                         <p class="mb-0" style="color:white;">LEVEL INCOME (Working)</p>
@@ -475,12 +457,9 @@
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 100</h3>
                         <p class="mb-0" style="color:white;">REWARD INCOME (Working)</p>
@@ -493,12 +472,9 @@
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
-                    <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 22</h3>
                         <p class="mb-0" style="color:white;">DECISION MAKING INCOME (Working)</p>
@@ -512,11 +488,8 @@
             <div class="card h-100">
                 <div class="card-body d-flex align-items-center">
                     <div class="p-3 rounded bg-soft-primary me-3" style="color:white!important">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
+                <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="Icon" width="30" height="30" class="rotate-icon">
+            </div>
                     <div>
                         <h3 class="mb-0">M 56</h3>
                         <p class="mb-0" style="color:white;">SALARY INCOME (Working)</p>

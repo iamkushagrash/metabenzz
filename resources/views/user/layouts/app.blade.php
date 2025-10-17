@@ -114,7 +114,7 @@
                             <a href="#" class="iq-sub-card">
                               <div class="d-flex align-items-center">
                                   <div class="">
-                                    <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="{{ asset('main/images/logoicon.png') }}" alt="">
+                                    <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="{{ asset('main/images/metabenzlogo.png') }}" alt="">
 
                                   </div>
                                   <div class="ms-3 w-100">
@@ -231,7 +231,7 @@
                 </li>
                 <li class="nav-item dropdown">
                   <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ asset('main/images/logoicon.png') }}" alt="User-Profile" class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">
+                    <img src="{{ asset('main/images/metabenzlogo.png') }}" alt="User-Profile" class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="../main/images/avatars/avtar_1.png" alt="User-Profile" class="theme-color-purple-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="../main/images/avatars/avtar_2.png" alt="User-Profile" class="theme-color-blue-img img-fluid avatar avatar-50 avatar-rounded">
                     <img src="../main/images/avatars/avtar_4.png" alt="User-Profile" class="theme-color-green-img img-fluid avatar avatar-50 avatar-rounded">
