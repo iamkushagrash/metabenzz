@@ -12,26 +12,26 @@ class StackingDetailController extends Controller
         $totalAmount=0;
         foreach($getAllDeposite as $deposit){
             if($amount>0){
-                if(Crypt::decrypt($deposit->capamount)<=$amount){
-                    $remainingAmount=Crypt::decrypt($deposit->capamount)-$amount;
-                    $totalAmount+=Crypt::decrypt($deposit->capamount);
-                    $amount=$amount-Crypt::decrypt($deposit->capamount);
+                if(($deposit->capamount)<=$amount){
+                    $remainingAmount=($deposit->capamount)-$amount;
+                    $totalAmount+=($deposit->capamount);
+                    $amount=$amount-($deposit->capamount);
                     $updateUserDetailUserstate=\App\UserDetails::where('id',$userid);
                     $updateUserDetailUserstate->decrement('userstate');
                     /*$updateUserDetailUserstate->save();*/
                     $updateCapping=\App\StackingDeposite::where('id',$deposit->id)->update([
-                        'capamount'  =>   Crypt::encrypt(0),
+                        'capamount'  =>   0,
                         'status'  =>   0,
                     ]);
                 }else{
-                    $remainingAmount=Crypt::decrypt($deposit->capamount)-$amount;
+                    $remainingAmount=($deposit->capamount)-$amount;
                     $updateCapping=\App\StackingDeposite::where('id',$deposit->id)->update([
-                        'capamount'  =>   Crypt::encrypt($remainingAmount),
+                        'capamount'  =>   ($remainingAmount),
                     ]);
                     $totalAmount+=$amount;
                     $amount=0;
                 }
-                \Log::info('userid '. $deposit->userid.' remaining Capping Amount is '.Crypt::decrypt($deposit->capamount));
+                \Log::info('userid '. $deposit->userid.' remaining Capping Amount is '.($deposit->capamount));
             }
         }
         return $totalAmount;
@@ -41,7 +41,7 @@ class StackingDetailController extends Controller
         $getAllPlan=\App\StackingDeposite::where([['userid',$userid],['istatus',0]])->get();
         foreach($getAllPlan as $plan){
             $updateCapping=\App\StackingDeposite::where('id',$plan->id)->update([
-                'capamount'  =>  Crypt::encrypt(Crypt::decrypt($plan->capamount)+(3*$plan->usdt)),
+                'capamount'  =>  (($plan->capamount)+(3*$plan->usdt)),
                 'istatus'  =>  1,
             ]);
         }
