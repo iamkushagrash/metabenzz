@@ -31,7 +31,28 @@ class HomeController extends Controller
     }
 
 
-        //User
+    //Admin
+    public function adminindex(){
+        $totalmember=DB::table('users')->where('licence',1)
+        ->get();
+        $totalpaid=DB::table('users')->where([['users.licence','1'],['user_details.userstatus','1']])
+        ->join('user_details','users.id','=','user_details.userid')
+        ->get();
+        $totalunpaid=DB::table('users')->where([['users.licence','1'],['user_details.userstatus','0']])
+        ->join('user_details','users.id','=','user_details.userid')
+        ->get();
+
+        
+
+        $rdata['totalmember']=$totalmember;
+        $rdata['totalpaid']=$totalpaid;
+        $rdata['totalunpaid']=$totalunpaid;
+
+        return view('control.dashboard')->with('data',$rdata);
+    }
+
+
+    //User
     public function userindex(){
         $userdetails=\App\UserDetails::where([['user_details.id',Session::get('user.id')]])
         ->leftJoin(DB::raw('(SELECT * FROM stacking_deposites WHERE id IN (SELECT MIN(id) FROM stacking_deposites GROUP BY userid)) as first_stack'), 'user_details.id', '=', 'first_stack.userid')
@@ -195,7 +216,6 @@ class HomeController extends Controller
                                 
                                 return view('user.dashboard')->with('data',$usrRaw);
     }
-
 
 
 
