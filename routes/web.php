@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth','userverification']], function () {
     Route::get('/User/Lock', 'WalletTransferController@lockPage');
     // Route::post('/User/getUser', 'WalletTransferController@getUserDetail');
     Route::post('/User/Lock', 'WalletTransferController@lockmbz');
+     Route::post('/User/getUserforlock', 'WalletTransferController@getUserDetailforlock');
     Route::get('/User/LockingHistory', 'BonusRewardController@userUpgradeLockingHistory');
     Route::get('/User/LockingTxnHistory', 'BonusRewardController@userUpgradeTxnHistory');
 

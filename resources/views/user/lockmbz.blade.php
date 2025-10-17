@@ -1,6 +1,6 @@
 @extends('user.layouts.app')
 
-@section('title', 'Locking mbz')
+@section('title', 'Lock MBZ')
 
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -10,7 +10,7 @@
         <div class="col-12 col-lg-8">
             <div class="card shadow-sm">
                 <div class="card-header text-center">
-                    <h4 class="card-title mb-0">Locking mbz</h4>
+                    <h4 class="card-title mb-0">Lock MBZ</h4>
                 </div>
                 <div class="card-body">
 
@@ -33,31 +33,61 @@
                         @endforeach
                     @endif
 
-                    <!-- Locking Form -->
-                    <form action="/User/Lock" method="post" id="lockForm">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">Available Balance ($)</label>
-                            <input type="text" class="form-control" value="@if(!is_null($balance)){{round(\Illuminate\Support\Facades\Crypt::decrypt($balance->amount),6)}}@else 0 @endif" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">MBZ Current Price ($)</label>
-                            <input type="text" class="form-control" value="{{round($price->price,3)}}" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Amount ($)</label>
-                            <input type="number" id="amount" name="amount" class="form-control" placeholder="Amount in USD">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Enter your password">
-                        </div>
+                    <!-- User ID Form -->
+                    @if(is_null($user))
+                        <form action="/User/getUserforlock" method="post">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="userid" class="form-label">Enter User ID</label>
+                                <input type="text" id="userid" name="userid" class="form-control" placeholder="Enter User ID" required>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Search User</button>
+                            </div>
+                        </form>
+                    @else
+                        <!-- Lock Form -->
+                        <form action="/User/Lock" method="post" id="lockForm">
+                            @csrf
+                            <input type="hidden" name="honeypotu" value="{{$user->id}}">
 
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.form.submit();">Lock Now</button>
-                            <a href="/User/Lock" class="btn btn-outline-secondary ms-2">Cancel</a>
-                        </div>
-                    </form>
+                            <div class="mb-3">
+                                <label class="form-label">User ID</label>
+                                <input type="text" class="form-control" value="{{ $user->uuid }}" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" value="{{ $user->name }}" readonly>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label class="form-label">Available Balance ($)</label>
+                                    <input type="text" class="form-control" value="@if(!is_null($balance)){{round(\Illuminate\Support\Facades\Crypt::decrypt($balance->amount),6)}}@else 0 @endif" readonly>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">Current MBZ Price ($)</label>
+                                    <input type="text" class="form-control" value="{{round($price->price,3)}}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Amount ($)</label>
+                                <input type="number" id="amount" name="amount" class="form-control" placeholder="Amount in USD">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Enter your password">
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.form.submit();">Lock Now</button>
+                                <a href="/User/Lock" class="btn btn-outline-secondary ms-2">Cancel</a>
+                            </div>
+                        </form>
+                    @endif
 
                 </div>
             </div>
