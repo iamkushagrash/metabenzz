@@ -518,6 +518,8 @@ class ComposerStaticInit94d4bf9ac7f4a933030e46a346ee2917
 
     public static $classMap = array (
         'App\\AccountDeposit' => __DIR__ . '/../..' . '/app/AccountDeposit.php',
+        'App\\AssetDetailChanges' => __DIR__ . '/../..' . '/app/AssetDetailChanges.php',
+        'App\\BonusReward' => __DIR__ . '/../..' . '/app/BonusReward.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Events\\UserRegistered' => __DIR__ . '/../..' . '/app/Events/UserRegistered.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -550,6 +552,7 @@ class ComposerStaticInit94d4bf9ac7f4a933030e46a346ee2917
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\LevelDetails' => __DIR__ . '/../..' . '/app/LevelDetails.php',
         'App\\LockMaturityHistory' => __DIR__ . '/../..' . '/app/LockMaturityHistory.php',
+        'App\\PointsTransaction' => __DIR__ . '/../..' . '/app/PointsTransaction.php',
         'App\\PointsWallet' => __DIR__ . '/../..' . '/app/PointsWallet.php',
         'App\\ProfileStore' => __DIR__ . '/../..' . '/app/ProfileStore.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -559,6 +562,7 @@ class ComposerStaticInit94d4bf9ac7f4a933030e46a346ee2917
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\StackingDeposite' => __DIR__ . '/../..' . '/app/StackingDeposite.php',
         'App\\StackingDetail' => __DIR__ . '/../..' . '/app/StackingDetail.php',
+        'App\\SupportQuery' => __DIR__ . '/../..' . '/app/SupportQuery.php',
         'App\\TransactionDetail' => __DIR__ . '/../..' . '/app/TransactionDetail.php',
         'App\\TransactionInfo' => __DIR__ . '/../..' . '/app/TransactionInfo.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',

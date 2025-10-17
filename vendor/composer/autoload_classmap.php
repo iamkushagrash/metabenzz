@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\AccountDeposit' => $baseDir . '/app/AccountDeposit.php',
+    'App\\AssetDetailChanges' => $baseDir . '/app/AssetDetailChanges.php',
+    'App\\BonusReward' => $baseDir . '/app/BonusReward.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\UserRegistered' => $baseDir . '/app/Events/UserRegistered.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
@@ -39,6 +41,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\LevelDetails' => $baseDir . '/app/LevelDetails.php',
     'App\\LockMaturityHistory' => $baseDir . '/app/LockMaturityHistory.php',
+    'App\\PointsTransaction' => $baseDir . '/app/PointsTransaction.php',
     'App\\PointsWallet' => $baseDir . '/app/PointsWallet.php',
     'App\\ProfileStore' => $baseDir . '/app/ProfileStore.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
@@ -48,6 +51,7 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\StackingDeposite' => $baseDir . '/app/StackingDeposite.php',
     'App\\StackingDetail' => $baseDir . '/app/StackingDetail.php',
+    'App\\SupportQuery' => $baseDir . '/app/SupportQuery.php',
     'App\\TransactionDetail' => $baseDir . '/app/TransactionDetail.php',
     'App\\TransactionInfo' => $baseDir . '/app/TransactionInfo.php',
     'App\\User' => $baseDir . '/app/User.php',

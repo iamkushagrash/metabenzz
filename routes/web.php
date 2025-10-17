@@ -65,4 +65,10 @@ Route::group(['middleware' => ['auth','userverification']], function () {
     Route::get('/User/LockingHistory', 'BonusRewardController@userUpgradeLockingHistory');
     Route::get('/User/LockingTxnHistory', 'BonusRewardController@userUpgradeTxnHistory');
 
+     //Support
+    Route::post('/User/CreateTicket','SupportQueryController@UserCreateTicket');
+    Route::get('/User/ViewTicket','SupportQueryController@viewUserTicket');
+    Route::get('/User/TicketView/{title}/{id}','SupportQueryController@viewTicketSingleUser');
+    Route::post('/User/ReplyTicket','SupportQueryController@postReplyUser');
+
 });

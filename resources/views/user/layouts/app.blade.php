@@ -272,7 +272,7 @@
 
     <!-- Header images -->
     <div class="iq-header-img position-absolute top-0 start-0 w-100 h-100" style="z-index: 1; transform-style: preserve-3d;" id="headerImages">
-        <img src="../main/images/head2.png" class="theme-color-default-img img-fluid w-100 h-100 bg-zoom" data-depth="5">
+        <img src="{{ asset('main/images/head2.png')}}" class="theme-color-default-img img-fluid w-100 h-100 bg-zoom" data-depth="5">
         <img src="../main/images/unnamed.jpg" class="theme-color-purple-img img-fluid w-100 h-100 bg-zoom" data-depth="10">
         <img src="../main/images/dashboard/top-header2.png" class="theme-color-blue-img img-fluid w-100 h-100 bg-zoom" data-depth="8">
         <img src="../main/images/dashboard/top-header3.png" class="theme-color-green-img img-fluid w-100 h-100 bg-zoom" data-depth="12">
