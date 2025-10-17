@@ -231,7 +231,10 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-3d mb-0">$ @if(!is_null($data['availblewallet'])){{round(\Illuminate\Support\Facades\Crypt::decrypt($data['availblewallet']->amount),6)}} @else 0 @endif</h3>
+                           <h3 class="text-3d mb-0">
+   
+   $ {{ isset($data['pointswallet']) ? round($data['pointswallet'], 6) : 0 }}
+</h3>
                             <p class="text-3d mb-0" style="color:white;">Points Wallet Amount</p>
                         </div>
                     </div>
@@ -279,7 +282,7 @@
                     <div class="alert alert-info mt-3">
                         <i class="fas fa-info-circle me-2"></i>
                         Share your referral link with friends and earn rewards when they sign up!<br>
-                        You'll get 10% of deposited Amount of Your referral
+                        You'll get 5% of deposited Amount of Your referral
                     </div>
 
                     <div class="d-flex flex-wrap gap-2">

@@ -246,7 +246,16 @@
                     <li><a class="dropdown-item" href="/User/EditProfile">Profile</a></li>
                    
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
+<li>
+    <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}"
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        Logout <i class="bi bi-toggle-off ms-auto text-theme fs-16px my-n1"></i>
+    </a>
+</li>
                   </ul>
                 </li>
               </ul>

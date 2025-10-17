@@ -84,7 +84,7 @@ class HomeController extends Controller
 
         $styprice=DB::table('profile_stores')->where('id',1)->get()->first();
         $availblewallet=\App\AccountDeposit::where('userid',\Session::get('user.id'))->first();
-
+        $pointswallet=\App\PointsWallet::where('userid',\Session::get('user.id'))->first();
 
         $getIncomingFund=\App\WalletTransfer::where([['userid',\Session::get('user.id')],/*['txnid','!=',0],*/['toWallet','wallet']])->get();
         $getOutgoingFund=\App\WalletTransfer::where([['fromUser',\Session::get('user.id')],['txnid',0],['fromWallet','wallet']])->get();
@@ -146,6 +146,7 @@ class HomeController extends Controller
                                             }
 
                                 $usrRaw['userdetails']=$userdetails;
+                                $usrRaw['pointswallet'] = $pointswallet ? $pointswallet->balance : 0;
                                 $usrRaw['userDetail']=$userDetail;
                                 $usrRaw['totaldirect']=$totaldirect;
                                 $usrRaw['activedirect']=$activedirect;
