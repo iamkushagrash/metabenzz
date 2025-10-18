@@ -221,7 +221,15 @@ class WalletTransferController extends Controller
                         $guiderUpdate->increment('total_direct_investment', $request->amount);
                         $guiderUpdate->increment('current_investment', $request->amount);
                         $guiderUpdate->increment('total_investment', $request->amount);
-                        if ($userStatus == 0) $guiderUpdate->increment('active_direct');
+                        if($userStatus==0){
+                                
+                                if($guiderUpdate->first()->active_direct==0){
+                                    $cappingFunction->cappingUpdate($guiderUpdate->first()->id);
+                                }
+                                $guiderUpdate->increment('active_direct');
+                                $guiderUpdate->increment('active_downline');
+                        }
+                        
                         // Referral Income
                         if ($guiderDetail->userstate) {
                             $directAmount = $request->amount * 5 / 100;
@@ -240,15 +248,16 @@ class WalletTransferController extends Controller
                         }
 
                         // Level update
-                        $guiderId = $guiderDetail->sponsorid;
-                        while ($guiderId > 0) {
-                            $levelUpdate = \App\UserDetails::where('userid', $guiderId);
-                            $levelUpdate->increment('current_level_investment', $request->amount);
-                            $levelUpdate->increment('total_level_investment', $request->amount);
-                            $levelUpdate->increment('current_investment', $request->amount);
-                            $levelUpdate->increment('total_investment', $request->amount);
-                            if ($userStatus == 0) $levelUpdate->increment('active_downline');
-                            $guiderId = $levelUpdate->first()->sponsorid;
+                        $guiderid = $guiderDetail->sponsorid;
+                        while ($guiderid > 0) {
+                            $guiderUpdate=\App\UserDetails::where('userid',$guiderid);
+                            $guiderUpdate->increment('current_level_investment',$request->amount);
+                            $guiderUpdate->increment('total_level_investment',$request->amount);
+                            $guiderUpdate->increment('current_investment',$request->amount);
+                            $guiderUpdate->increment('total_investment',$request->amount);
+                            if($userStatus==0)
+                                $guiderUpdate->increment('active_downline');
+                            $guiderid=$guiderUpdate->first()->sponsorid;
                         }
                     }
 
@@ -422,12 +431,14 @@ public function lockmbz(Request $request)
         ]);
 
         // Update user investment info
+        $userStatus = $userUpdate->first()->userstate;
+
         $userUpdate->increment('current_self_investment', $request->amount);
         $userUpdate->increment('total_self_investment', $request->amount);
         $userUpdate->increment('current_investment', $request->amount);
         $userUpdate->increment('total_investment', $request->amount);
         $userUpdate->increment('userstate'); // keep existing
-        $userUpdate->update(['userstatus' => 1, 'roi_status' => 1]);
+        $userUpdate->update(['userstatus' => 1, 'capping' => 0, 'roi_status' => 1]);
 
         // Guider/Sponsor Update
         $cappingFunction = new \App\Http\Controllers\StackingDetailController();
@@ -439,6 +450,14 @@ public function lockmbz(Request $request)
             $guiderUpdate->increment('total_direct_investment', $request->amount);
             $guiderUpdate->increment('current_investment', $request->amount);
             $guiderUpdate->increment('total_investment', $request->amount);
+
+            if($userStatus==0){           
+                if($guiderUpdate->first()->active_direct==0){
+                    $cappingFunction->cappingUpdate($guiderUpdate->first()->id);
+                }
+                $guiderUpdate->increment('active_direct');
+                $guiderUpdate->increment('active_downline');
+            }
 
             // 5% Referral Bonus
             if ($guiderDetail->userstate) {
@@ -458,15 +477,16 @@ public function lockmbz(Request $request)
             }
 
             // Level Updates
-            $guiderId = $guiderDetail->sponsorid;
-            while ($guiderId > 0) {
-                $levelUpdate = \App\UserDetails::where('userid', $guiderId);
-                $levelUpdate->increment('current_level_investment', $request->amount);
-                $levelUpdate->increment('total_level_investment', $request->amount);
-                $levelUpdate->increment('current_investment', $request->amount);
-                $levelUpdate->increment('total_investment', $request->amount);
-                if ($userUpdate->userstate == 0) $levelUpdate->increment('active_downline');
-                $guiderId = $levelUpdate->first()->sponsorid;
+            $guiderid = $guiderDetail->sponsorid;
+            while ($guiderid > 0) {
+                $guiderUpdate=\App\UserDetails::where('userid',$guiderid);
+                $guiderUpdate->increment('current_level_investment',$request->amount);
+                $guiderUpdate->increment('total_level_investment',$request->amount);
+                $guiderUpdate->increment('current_investment',$request->amount);
+                $guiderUpdate->increment('total_investment',$request->amount);
+                if($userStatus==0)
+                    $guiderUpdate->increment('active_downline');
+                $guiderid=$guiderUpdate->first()->sponsorid;
             }
         }
 

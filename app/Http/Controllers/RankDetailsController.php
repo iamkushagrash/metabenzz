@@ -11,6 +11,8 @@ class RankDetailsController extends Controller
         $getAllUsers=\App\UserDetails::where('userstatus','>',0)->orderBy('created_at','desc')->get();
         $getAllRankNormal=\App\RankDetails::where('status',1)->get();
         $getAllRank=\App\RankDetails::where('status',2)->get();
+        $qualified=array(4=>0,5=>0,6=>0);
+        $rankQualified=0;
         foreach($getAllUsers as $user){
             $filterRank=$getAllRankNormal->filter(function($q)use($user){
                 return $q->topup_amount<=$user->stackingDeposite()->max('usdt') && $q->firstline<= $user->clubBusiness()['first'] && $q->secondline<= $user->clubBusiness()['rest'] && $q->teamsize<= $user->active_downline && $q->direct_business<=$user->total_direct_investment && $q->direct_count<= $user->active_direct;
@@ -20,8 +22,9 @@ class RankDetailsController extends Controller
                 $userNormalRankUpdate=\App\UserDetails::where('id',$user->id)->update([
                     'user_rank'  =>  $filterRank->last()->rank_id,
                 ]);
+                $rankQualified=$filterRank->last()->rank_id;
                 $directDetail=$user->totalDirect()->get();
-                $rankQualified=0;
+                
                 foreach($getAllRank as $rank){
                     $legsRank=array();
                     if(count($directDetail)>=$rank->leg_count){
@@ -35,7 +38,7 @@ class RankDetailsController extends Controller
                             $star6+=($direct->user_rank==6)?1:0;
                             $sponsorid=[$direct->userid];
                             while(count($sponsorid)){
-                                $getDownline=\App\UserDetails::whereIn('sponsorid',$sponsorid)->get();
+                                $allDirect=\App\UserDetails::whereIn('sponsorid',$sponsorid)->get();
                                 if(count($allDirect)){
                                     $allDirectFilter=$allDirect->where('user_rank','=',4);
                                     $star4+=count($allDirectFilter);
@@ -64,9 +67,7 @@ class RankDetailsController extends Controller
                         if($qualified[4]>=$rank->leg_count){
                             $rankQualified=5;
                             break;
-                        }else
-                            $rankQualified= 4;
-                            break;
+                        }
                     }else{
                         break;
                     }
