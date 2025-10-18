@@ -33,7 +33,7 @@ class CpsIncomeController extends Controller
                 $cappingFunction=new StackingDetailController();
                 $returnAmount=$cappingFunction->cappingCalculation($deposit->userid,$cps);
               
-                $insIncomeEntry=\App\CpsIncome::create([
+                $insIncomeEntry=\App\CpsIncome::insertGetId([
                     'userid'        =>  $deposit->userid,
                     'txnid'         =>  $deposit->id,
                     'amount'        =>  $returnAmount/$profileStore->price,
@@ -42,13 +42,49 @@ class CpsIncomeController extends Controller
                     'status'        =>  0,
                     'created_at'    =>  now(),
                 ]);
-               
+               $levelDisburse=$this->disburseLevel($returnAmount,$deposit->userid,$insIncomeEntry);
             }
         }
     }
 
-    public function disburseLevel($amount,$userid){
-        
+    public function disburseLevel($amount,$userid,$txnid){
+        $getUseDetail=\App\UserDetails::where('id',$userid)->first();
+        $sponsorid=$getUseDetail->sponsorid;
+        $getAllLevel=\App\LevelDetails::where('status','>',0)->get();
+        $i=1;
+        while($sponsorid && $i<=count($getAllLevel)){
+            $guiderDetail=\App\UserDetails::where('userid',$sponsorid)->first();
+            if($guiderDetail->user()->permission == 1 &&
+                $guiderDetail->capping != 1 &&
+                $guiderDetail->level_status > 0){
+                $guiderLevel=$getAllLevel->filter(function($q)use($i){
+                    return $q->levelname==$i;
+                })->first();
+                if(!is_null($guiderLevel)){
+                    $condition=($guiderLevel->status==1)?($guiderDetail->active_direct>=$guiderLevel->direct_count):($guiderDetail->user_rank>=$guiderLevel->direct_count);
+                    if($condition){
+                        $levelAmount=$amount*$guiderLevel->cps/100;
+                        $cappingFunction=new StackingDetailController();
+                        $returnAmount=$cappingFunction->cappingCalculation($guiderDetail->id,$levelAmount);
+                        if($returnAmount>0){
+                            $levelEntry=\App\LevelIncome::create([
+                                'userid'  =>  $guiderDetail->id,
+                                'fromuser'  =>  $userid,
+                                'amount'  =>  $returnAmount/$profileStore->price,
+                                'remaining'  =>  $returnAmount/$profileStore->price,
+                                'amt_usdt'  =>  $returnAmount,
+                                'txnid'  =>  $txnid,
+                                'description'  =>  'l',
+                                'created_at'  =>  now(),
+                                'updated_at'  =>  now(),
+                            ]);
+                        }
+                    }
+                    $i++;
+                }
+            }
+            $sponsorid=$guiderDetail->sponsorid;
+        }
     }
 
 
