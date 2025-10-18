@@ -41,7 +41,7 @@ class StackingDetailController extends Controller
         $getAllPlan=\App\StackingDeposite::where([['userid',$userid],['istatus',0]])->get();
         foreach($getAllPlan as $plan){
             $updateCapping=\App\StackingDeposite::where('id',$plan->id)->update([
-                'capamount'  =>  (($plan->capamount)+(3*$plan->usdt)),
+                'capamount'  =>  (($plan->capamount)+(2*$plan->usdt)),
                 'istatus'  =>  1,
             ]);
         }
