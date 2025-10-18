@@ -221,7 +221,7 @@ class WalletTransferController extends Controller
                         $guiderUpdate->increment('total_direct_investment', $request->amount);
                         $guiderUpdate->increment('current_investment', $request->amount);
                         $guiderUpdate->increment('total_investment', $request->amount);
-
+                        if ($userStatus == 0) $guiderUpdate->increment('active_direct');
                         // Referral Income
                         if ($guiderDetail->userstate) {
                             $directAmount = $request->amount * 5 / 100;
