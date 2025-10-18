@@ -38,6 +38,25 @@ Route::get('/clear-cache', function() {
 Route::group(['middleware' => ['auth','adminverification']], function () {
     Route::get('/Main/Dashboard', 'HomeController@adminindex');
 
+    Route::get('/Main/UnpaidMembers', 'UserDetailsController@getAdminUnpaid');
+    Route::get('/Main/PaidMembers', 'UserDetailsController@getAdminPaid');
+    Route::get('/Main/AllMembers', 'UserDetailsController@getAdminAll');
+    Route::post('/Main/AllMembers', 'UserDetailsController@getAdminAll');
+
+    Route::get('/Main/UserDirectTeam', 'AssetDetailController@userDirectPage');
+    Route::post('/Main/UserDirectTeam', 'AssetDetailController@userDirectTeamList');
+    Route::get('/Main/UserAllTeam', 'AssetDetailController@userAllTeamPage');
+    Route::post('/Main/UserAllTeam', 'AssetDetailController@userAllTeamList');
+
+    Route::get('/Main/User/{userid}', 'UserDetailsController@MemberEdit');
+    Route::post('/Main/EditUser', 'UserDetailsController@MemberUpdate');
+    Route::post('/Main/UserChangePassword', 'UserDetailsController@AdminUserPassword');
+    Route::post('/Main/SearchUserId', 'UserDetailsController@searchUserbyUserId');
+    Route::get('/Main/UserSearch', 'UserDetailsController@searchUserbyAdmin');
+
+    Route::get('/Main/Lock/{userid}', 'UserDetailsController@MemberLock');
+    Route::get('/Main/Unlock/{userid}', 'UserDetailsController@MemberUnlock');
+    Route::post('/Main/UserPermissions/{userid}', 'UserDetailsController@updateUserPermission');
 
     Route::get('/Main/AdminUSDTuser', 'AccountDepositController@adminUSDTPage');
     Route::post('/Main/AdminUSDTuser', 'AccountDepositController@findUser');
@@ -46,6 +65,26 @@ Route::group(['middleware' => ['auth','adminverification']], function () {
     Route::get('/Main/AdminUSDTReport', 'AccountDepositController@reportAdminUsdt');
     Route::post('/Main/AdminUSDTReport', 'AccountDepositController@reportAdminUsdt');
     Route::get('/Main/UserWalletBalance', 'AccountDepositController@userWalletBalance');
+
+    Route::get('/Main/UserUSDTDeposit', 'BonusRewardController@userDepositHis');
+    Route::post('/Main/UserUSDTDeposit', 'BonusRewardController@userDepositHis');
+
+    Route::get('/Main/UserPackageHistory', 'BonusRewardController@userPeriodStaking');
+    Route::post('/Main/UserPackageHistory', 'BonusRewardController@userPeriodStaking');
+
+    Route::get('/Main/DraggingIncomeReport', 'BonusRewardController@reportDragging');
+    Route::post('/Main/DraggingIncomeReport', 'BonusRewardController@reportDragging');
+    Route::get('/Main/DirectIncomeReport', 'BonusRewardController@reportDirect');
+    Route::post('/Main/DirectIncomeReport', 'BonusRewardController@reportDirect');
+
+
+    Route::get('/Main/CompanyProfile', 'ProfileStoreController@companyProfilepage');
+    Route::post('/Main/CompanyProfile', 'ProfileStoreController@editCompanyProfile');
+    Route::post('/Main/StatusCompanyProfile', 'ProfileStoreController@editCompanyDepositStatus');
+
+    Route::get('/Main/Support', 'SupportQueryController@adminsupport');
+    Route::get('/Main/TicketView/{title}/{id}','SupportQueryController@viewTicketAdmin');
+    Route::post('/Main/ReplyTicket','SupportQueryController@postReplyAdmin');
 
 
 

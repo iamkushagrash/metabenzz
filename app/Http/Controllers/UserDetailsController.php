@@ -19,7 +19,7 @@ class UserDetailsController extends Controller
     public function getAdminUnpaid(){
             $members=DB::table('users')->where([['users.licence','1'],['user_details.userstatus','0']])
             ->join('user_details','users.id','=','user_details.userid')
-            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.total_investment as totalinvestment')
+            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.total_investment as totalinvestment', 'users.wallet_address as bep20address')
             ->selectRaw('case when user_details.userstatus=0 then "Unpaid" when user_details.userstatus=1 then "Paid" end as status')
             ->selectRaw('case when user_details.userstatus=0 then "status-cancelled" when user_details.userstatus=1 then "status-complete" end as statusclass')
             ->orderByRaw('users.created_at DESC')
@@ -31,36 +31,12 @@ class UserDetailsController extends Controller
             $members=DB::table('users')->where([['users.licence','1'],['user_details.userstatus','1']])
             ->join('user_details','users.id','=','user_details.userid')
             ->join('users as gd','gd.id','=','user_details.sponsorid')
-            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.current_self_investment as current', 'gd.uuid as guiderid', 'user_details.active_direct as activedirect')
+            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.current_self_investment as current', 'gd.uuid as guiderid', 'user_details.active_direct as activedirect', 'users.wallet_address as bep20address')
             ->selectRaw('case when user_details.userstatus=0 then "Unpaid" when user_details.userstatus=1 then "Paid" end as status')
             ->selectRaw('case when user_details.userstatus=0 then "status-cancelled" when user_details.userstatus=1 then "status-complete" end as statusclass')
             ->orderByRaw('users.created_at DESC')
             ->get();
             return view('control.totalpaid')->with('members',$members);
-    }
-
-    public function getAdminLevel(){
-            $members=DB::table('users')->where([['users.licence','1'],['user_details.leveluser','>','0']])
-            ->join('user_details','users.id','=','user_details.userid')
-            ->join('users as gd','gd.id','=','user_details.sponsorid')
-            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.current_self_investment as current', 'gd.uuid as guiderid', 'user_details.active_direct as activedirect', 'user_details.leveluser as leveluser')
-            ->selectRaw('case when user_details.userstatus=0 then "Unpaid" when user_details.userstatus=1 then "Paid" end as status')
-            ->selectRaw('case when user_details.userstatus=0 then "status-cancelled" when user_details.userstatus=1 then "status-complete" end as statusclass')
-            ->orderByRaw('users.created_at DESC')
-            ->get();
-            return view('control.totalopenlevel')->with('members',$members);
-    }
-
-    public function getAdminBooster(){
-            $members=DB::table('users')->where([['users.licence','1'],['user_details.booster','2']])
-            ->join('user_details','users.id','=','user_details.userid')
-            ->join('users as gd','gd.id','=','user_details.sponsorid')
-            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.current_self_investment as current', 'gd.uuid as guiderid', 'user_details.active_direct as activedirect', 'user_details.leveluser as leveluser')
-            ->selectRaw('case when user_details.userstatus=0 then "Unpaid" when user_details.userstatus=1 then "Paid" end as status')
-            ->selectRaw('case when user_details.userstatus=0 then "status-cancelled" when user_details.userstatus=1 then "status-complete" end as statusclass')
-            ->orderByRaw('users.created_at DESC')
-            ->get();
-            return view('control.totalbooster')->with('members',$members);
     }
 
     public function getAdminAll(Request $request){
@@ -75,7 +51,7 @@ class UserDetailsController extends Controller
             ->whereBetween('users.created_at',[$fromDate,$toDate])
             ->join('user_details','users.id','=','user_details.userid')
             ->join('users as gd','gd.id','=','user_details.sponsorid')
-            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.current_self_investment as current', 'gd.uuid as guiderid', 'user_details.active_direct as activedirect')
+            ->select('users.id as id', 'users.usersname as name', 'users.uuid as userid', 'users.email as email', 'users.doj as doj', 'user_details.current_self_investment as current', 'gd.uuid as guiderid', 'user_details.active_direct as activedirect', 'users.wallet_address as bep20address')
             ->selectRaw('case when user_details.userstatus=0 then "Unpaid" when user_details.userstatus=1 then "Paid" end as status')
             ->selectRaw('case when user_details.userstatus=0 then "status-cancelled" when user_details.userstatus=1 then "status-complete" end as statusclass')
             ->orderByRaw('users.created_at DESC')
@@ -88,11 +64,11 @@ class UserDetailsController extends Controller
         $memberedit=DB::table('users')->where([['users.licence','1'],['users.uuid',$userid]])
         ->join('user_details','users.id','=','user_details.userid')
         ->join('users as gd','gd.id','=','user_details.sponsorid')
-        ->leftJoin('asset_details','asset_details.userid','=','user_details.id')
-        ->select('users.id as id', 'users.usersname as usersname', 'users.uuid as uuid', 'users.s_password as showpassword', 'users.ccode as ccode', 'users.email as email', 'users.contact as contact', 'users.permission as permission', 'user_details.leveluser as levelpercentage', 'gd.uuid as guiderid', 'gd.usersname as guidername', 'asset_details.bep20addr as bep20address', 'asset_details.usdttrc20addr as usdtaddress', 'asset_details.usdtbep20addr as usdtbep20address')
-        ->selectRaw('case when asset_details.asset_status=0 then "Not Open" when asset_details.asset_status=1 then "Open" end as asset_status')
+        /*->leftJoin('asset_details','asset_details.userid','=','user_details.id')*/
+        ->select('users.id as id', 'users.usersname as usersname', 'users.uuid as uuid', 'users.s_password as showpassword', 'users.ccode as ccode', 'users.email as email', 'users.contact as contact', 'users.permission as permission', 'user_details.leveluser as levelpercentage', 'gd.uuid as guiderid', 'gd.usersname as guidername', 'users.wallet_address as bep20address')
+        /*->selectRaw('case when asset_details.asset_status=0 then "Not Open" when asset_details.asset_status=1 then "Open" end as asset_status')*/
         ->selectRaw('case when user_details.roi_status=0 then "Not Open" when user_details.roi_status=1 then "Open" end as roi_status')
-        ->selectRaw('case when user_details.booster=1 then "Inactive" when user_details.booster=2 then "Active" end as booster_status')
+        /*->selectRaw('case when user_details.booster=1 then "Inactive" when user_details.booster=2 then "Active" end as booster_status')*/
         ->get()->first();
         return view('control.memberdetail')->with('editdata',$memberedit);
     }
@@ -100,13 +76,11 @@ class UserDetailsController extends Controller
     {
         Validator::make($request->all(), [
             'name'      => ['required', 'string','regex:/^[a-zA-Z0-9\s]|[^<>]+$/u'],
-            'uuid'      => ['required', 'string','regex:/^MWT|mwt|Mwt[0-9]{7}+$/'],
+            'uuid'      => ['required', 'string','regex:/^MBZ|mbz|Mbz[0-9]{7}+$/'],
             'contact'      => ['nullable', 'numeric'],
             'oldemail' => ['nullable', 'string', 'email'],
             'email' => ['required', 'string', 'email'/*, 'unique:users'*/],
             'bep20address'      => ['string','nullable','regex:/^0x[a-fA-F0-9]{40}$/u'],
-            'usdtaddress'      => ['string','nullable','regex:/^T[a-zA-Z0-9]{33}$/u'],
-            'usdtbep20address'      => ['string','nullable','regex:/^0x[a-fA-F0-9]{40}$/u'],
         ])->validate();
 
         $userdt=DB::table('user_details')->where([['users.licence','1'],['users.uuid',$request->uuid]])
@@ -115,23 +89,22 @@ class UserDetailsController extends Controller
         ->get()->first();
         $newmailcheck=\App\User::where('email',$request->email)->first();
         
-        /*if (!is_null($newmailcheck) && $request->oldemail!=$request->email) {
+        if (!is_null($newmailcheck) && $request->oldemail!=$request->email) {
             return redirect('/Main/User/'.$request->uuid)->with('warning','Email Already Exists. Please use a different email.');
-        }*/
+        }
         $updusr=DB::table('users')->where('id',$userdt->id)->update([
             'usersname' => $request->name,
             'email' => $request->email,
             'contact' => $request->contact,
             ]);
         
-        $useredit=\App\AssetDetail::firstOrNew(array('userid'=>$userdt->uid));
-        if(!is_null($request->bep20address))
-            $useredit->bep20addr=$request->bep20address;
-        if(!is_null($request->usdtaddress))
-            $useredit->usdttrc20addr=$request->usdtaddress;
-        if(!is_null($request->usdtbep20address))
-            $useredit->usdtbep20addr=$request->usdtbep20address;
-        $useredit->save();
+       
+        if(!is_null($request->bep20address)){
+            $updusr=DB::table('users')->where('id',$userdt->id)->update([
+            'wallet_address' => $request->bep20address,
+            ]);
+        }
+        
         return redirect('/Main/User/'.$request->uuid)/*->back()*/->with('success','Profile Successfully Edited');
     }
     public function AdminUserPassword(Request $request)
@@ -153,15 +126,7 @@ class UserDetailsController extends Controller
         $details['oldpassword']=Crypt::decrypt($userdts->s_password);
         $details['newpassword']=$request->password;
         $details['userid']=$request->userid;
-        try{
-            $mwObj=new SupportQueryController();
-            $metawalletStatus=$mwObj->sendPasswordtoMetawallet($details);//\Log::info('metawallet password api status'.$metawalletStatus);
-        }
-        catch(Exception $e){
-            \Log::info('Error in metawallet after password change of user id '.$userdts->uuid);
-            \Log::info($e->messages());
-        }
-
+        
 
         return redirect()->back()->with('success','Password Successfully Edited');
     }
@@ -193,59 +158,23 @@ class UserDetailsController extends Controller
     }
     public function updateUserPermission($userid, Request $request){
         Validator::make($request->all(), [
-            'assetstatus'      => ['string','required'],
-            'usdtnull'      => ['string','nullable'],
-            'usdtbep20null'      => ['string','nullable'],
-            'levelpercentage'      => ['numeric','required'],
             'roistatus'      => ['string','required'],
-            'boosterstatus'      => ['string','required'],
         ])->validate();
         
-        if ($request->assetstatus=='Not Open') {
-            $assetst=0;
-        }elseif ($request->assetstatus=='Open') {
-            $assetst=1;
-        }
         if ($request->roistatus=='Not Open') {
             $roist=0;
         }elseif ($request->roistatus=='Open') {
             $roist=1;
         }
-        if ($request->boosterstatus=='Inactive') {
-            $btst=1;
-        }elseif ($request->boosterstatus=='Active') {
-            $btst=2;
-        }
+        
         $member=DB::table('users')->where([['permission',1],['uuid',$userid]])
         ->join('user_details','users.id','=','user_details.userid')
         ->select('users.id as id','user_details.id as userid','user_details.active_direct as active_direct')
         ->first();
-        if($request->levelpercentage>0){
-            $updlevel=DB::table('user_details')->where('id',$member->userid)->update([
-                'leveluser' => $request->levelpercentage,
-                'level_status' => 2,
-            ]);
-        }
-
+        
         $updroi=DB::table('user_details')->where('id',$member->userid)->update([
             'roi_status' => $roist,
-            'booster' => $btst,
         ]);
-        
-        if(!is_null($request->usdtnull)){
-            $updusr=DB::table('asset_details')->where('userid',$member->userid)->update([
-                'usdttrc20addr' => NULL,
-            ]);
-        }
-        if(!is_null($request->usdtbep20null)){
-            $updusr=DB::table('asset_details')->where('userid',$member->userid)->update([
-                'usdtbep20addr' => NULL,
-            ]);
-        }
-        $userasset=\App\AssetDetail::firstOrNew(array('userid'=>$member->userid));
-        if(!is_null($assetst))
-            $userasset->asset_status=$assetst;
-            $userasset->save();
         
        
         return redirect()->back()->with(['success'=>'Permission Updated Successfully.']);

@@ -26,8 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        //$schedule->call('App\Http\Controllers\CpsIncomeController@cpsGeneration')->everyMinute()->timezone('Asia/Kolkata');
         $schedule->call('App\Http\Controllers\RankDetailsController@checkRank')->everyMinute()->timezone('Asia/Kolkata');
+        $schedule->call('App\Http\Controllers\CpsIncomeController@cpsGeneration')->daily()->at('10:00')->timezone('Asia/Kolkata');
     }
 
     /**

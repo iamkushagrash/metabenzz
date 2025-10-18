@@ -124,7 +124,10 @@
                             </a>
                             <ul class="sub-menu">
                                 <li>
-                                    <a class="" href="/Main/StakingIncomeReport">Dragging Income Report</a>
+                                    <a class="" href="/Main/DraggingIncomeReport">Dragging Income Report</a>
+                                </li>
+                                <li>
+                                    <a class="" href="/Main/DirectIncomeReport">Direct Income Report</a>
                                 </li>
                             </ul>
                         </li>
@@ -165,15 +168,15 @@
                                 <span class="arrow "></span>
                             </a>
                             <ul class="sub-menu">
-                                <li>
+                               <!-- <li>
                                     <a class="" href="/Main/UserOneClickSearch">User One Click</a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <a class="" href="/Main/UserSearch">Search User</a>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <a class="" href="/Main/UserIncomeSearch">Search User Income</a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
                         <li class="">
